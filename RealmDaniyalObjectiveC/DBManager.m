@@ -73,6 +73,11 @@
     [realm commitWriteTransaction];
 }
 
+- (void)deleteAll {
+    [realm deleteAllObjects];
+}
+
+
 /*
  func update(block: @escaping ()->Void) {
  

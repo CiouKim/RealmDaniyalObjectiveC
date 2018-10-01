@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteRealmObject :(RLMObject *)obj;
 - (void)realmBeginChanges;
 - (void)realmEndChanges;
-
+- (void)deleteAll;
 @end
 
 NS_ASSUME_NONNULL_END
