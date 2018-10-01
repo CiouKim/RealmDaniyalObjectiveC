@@ -27,7 +27,11 @@
     [super viewDidLoad];
     dbManager = DBManager.sharedManager;
     personArray = [NSMutableArray new];
-    personArray = (NSMutableArray <Person *> *)[Person allObjects];
+    
+    for (RLMObject *person in [Person allObjects]) {
+        Person *personOb = (Person *)person;
+        [personArray addObject:personOb];
+    }
     // Do any additional setup after loading the view, typically from a nib.
 
 
@@ -57,22 +61,24 @@
         
         Person *tobeDelete = [personArray objectAtIndex:indexPath.row];
         [[DBManager sharedManager] deleteRealmObject:tobeDelete];
-        personArray = (NSMutableArray <Person *> *)[Person allObjects];  //Directing adding to personarray causing crash that's why re-fetchging - a temporary workaround.
-        [baseTableView reloadData];
+        [personArray removeObjectAtIndex:indexPath.row];
+        [baseTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
 }
 
 - (IBAction)didTappedAddRecord:(UIButton *)sender {
-    
+    [tfName resignFirstResponder];
+    [tfBirthday resignFirstResponder];
     NSString *getName = tfName.text;
     NSString *getBirthday = tfBirthday.text;
     tfBirthday.text = @"";
     tfName.text = @"";
     Person *personObject = [[Person alloc]initWithValue:getName andWithDate:getBirthday];
     [dbManager addRealmObject:personObject];
-    personArray = (NSMutableArray <Person *> *)[Person allObjects];  //Directing adding to personarray causing crash that's why re-fetchging - a temporary workaround.
-    [baseTableView reloadData];
+    [personArray addObject:personObject];
+    NSArray *arr = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:personArray.count-1 inSection:0]];
+    [baseTableView insertRowsAtIndexPaths:arr withRowAnimation:UITableViewRowAnimationNone];
 }
 
 
