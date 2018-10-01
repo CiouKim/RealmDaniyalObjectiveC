@@ -65,11 +65,11 @@
     } @finally {}
 }
 
-- (void)realmBeginChanges{
+- (void)realmBeginChanges {
     [realm beginWriteTransaction];
 }
 
-- (void)realmEndChanges{
+- (void)realmEndChanges {
     [realm commitWriteTransaction];
 }
 
